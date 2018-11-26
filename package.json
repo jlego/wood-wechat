@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/jlego/wood-wechat/issues"
   },
-  "homepage": "https://github.com/jlego/wood-wechat#readme"
+  "homepage": "https://github.com/jlego/wood-wechat#readme",
+  "dependencies": {
+    "wechat": "^2.1.0"
+  }
 }

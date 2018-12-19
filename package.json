@@ -1,6 +1,6 @@
 {
   "name": "wood-wechat",
-  "version": "1.0.1",
+  "version": "1.0.10",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/jlego/wood-wechat#readme",
   "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "wechat": "^2.1.0",
     "wechat-api": "^1.35.1"
   }

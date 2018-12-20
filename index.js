@@ -34,12 +34,12 @@ module.exports = (app = {}, config = {}) => {
       }
     },
 
-    // 回调
+    // 回调中间件
     async callback(req, res, next){
       let params = Util.getParams(req), { reg_from, state, code } = params;
       if(reg_from === 'wechat'){
         let hasState = await catchErr(app.Wechat.hasState(state));
-        if(!hasState){
+        if(hasState.err || !hasState.data){
           res.print('授权失败');
           return;
         }
@@ -56,10 +56,8 @@ module.exports = (app = {}, config = {}) => {
         }
         let userinfo = userinfoResult.data;
         userinfo.image_url = userinfo.headimgurl;
-        Object.assign(req.body, {
-          userinfo,
-          openid
-        });
+        req.userinfo = userinfo;
+        req.openid = openid;
       }
       next();
     },

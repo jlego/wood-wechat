@@ -10,9 +10,8 @@ module.exports = (app = {}, config = {}) => {
   app.Wechat = {
     async hasState(key){
       let stateCache = new Redis('auth'),
-        result = await catchErr(stateCache.getValue(key));
-      if(result.err) throw error(result.err);
-      return true;
+        result = await stateCache.getValue(key);
+      return result;
     },
     // 发起授权
     auth(req, res, next) {
@@ -65,10 +64,9 @@ module.exports = (app = {}, config = {}) => {
     // 获取access_token
     async accessToken(params = {}){
       let { code } = params;
-      let tokenResult = await catchErr(request.get(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appid}&secret=${config.secret}&code=${code}&grant_type=authorization_code`));
-      if (tokenResult.err) throw error(tokenResult.err);
+      let tokenResult = await request.get(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appid}&secret=${config.secret}&code=${code}&grant_type=authorization_code`);
       try{
-        tokenResultData = JSON.parse(tokenResult.data);
+        tokenResultData = JSON.parse(tokenResult);
       }catch(err) {
         throw error(err);
       }
@@ -78,10 +76,9 @@ module.exports = (app = {}, config = {}) => {
     // 获取userinfo
     async userinfo(params = {}){
       let { access_token, openid } = params;
-      let userinfoResult = await catchErr(request.get(`https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`));
-      if (userinfoResult.err) throw error(userinfoResult.err);
+      let userinfoResult = await request.get(`https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`);
       try{
-        userinfoResultData = JSON.parse(userinfoResult.data);
+        userinfoResultData = JSON.parse(userinfoResult);
       }catch(err) {
         throw error(err);
       }
